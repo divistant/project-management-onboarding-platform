@@ -14,6 +14,7 @@ export const id: Record<TranslationKey, string> = {
     nav_new: "Onboarding Baru",
     nav_settings: "Pengaturan",
     nav_users: "Pengguna",
+    nav_analytics: "Analitik",
 
     // ── Breadcrumb route labels ─────────────────────────────────
     route_dashboard: "Dashboard",

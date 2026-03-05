@@ -12,6 +12,7 @@ export const en = {
     nav_new: "New Onboarding",
     nav_settings: "Settings",
     nav_users: "User",
+    nav_analytics: "Analytics",
 
     // ── Breadcrumb route labels ─────────────────────────────────
     route_dashboard: "Dashboard",

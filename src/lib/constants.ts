@@ -50,6 +50,13 @@ export const NAV_GROUPS: NavGroup[] = [
         roles: ALL_ROLES,
       },
       {
+        label: "Analytics",
+        labelKey: "nav_analytics",
+        href: "/analytics",
+        icon: "PieChart",
+        roles: ALL_ROLES,
+      },
+      {
         label: "Onboarding Project",
         labelKey: "nav_onboarding",
         href: "/onboarding",

@@ -14,6 +14,7 @@ import {
   User,
   LogOut,
   Circle,
+  PieChart,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { NAV_GROUPS } from "@/lib/constants";
@@ -38,6 +39,7 @@ const ICON_MAP: Record<string, React.ComponentType<{ className?: string }>> = {
   Users,
   Plug,
   ScrollText,
+  PieChart,
 };
 
 export function Sidebar() {

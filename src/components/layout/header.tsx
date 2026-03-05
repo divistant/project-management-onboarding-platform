@@ -36,6 +36,7 @@ const ROUTE_KEY_MAP: Record<string, string> = {
   new: "route_new",
   settings: "nav_settings",
   users: "nav_users",
+  analytics: "nav_analytics",
 };
 
 const THEME_ICONS: Record<Theme, typeof Sun> = {
