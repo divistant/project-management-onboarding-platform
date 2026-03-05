@@ -72,49 +72,53 @@ export default function WorkspacePage({
           </div>
         </div>
 
-        <Tabs value={activeTab} onValueChange={setActiveTab}>
-          <TabsList className="flex-nowrap overflow-x-auto scrollbar-hide w-full justify-start">
-            <TabsTrigger value="pipeline">Pipeline</TabsTrigger>
-            <TabsTrigger value="documents">Documents</TabsTrigger>
-            <TabsTrigger value="extracted">Extracted Content</TabsTrigger>
-            <TabsTrigger value="wiki" disabled={!request.wikiDraft}>
-              Wiki Draft
-            </TabsTrigger>
-            <TabsTrigger value="backlog" disabled={!request.backlogDraft}>
-              Backlog Draft
-            </TabsTrigger>
-            <TabsTrigger value="compliance" disabled={!request.compliance}>
-              Compliance
-            </TabsTrigger>
-            <TabsTrigger value="review">Review & Approvals</TabsTrigger>
-            <TabsTrigger value="generate">Generate</TabsTrigger>
-          </TabsList>
+        <div className="grid grid-cols-[1fr_320px] gap-4 items-start">
+          {/* Left: Main tabbed content */}
+          <Tabs value={activeTab} onValueChange={setActiveTab}>
+            <TabsList className="flex-nowrap overflow-x-auto scrollbar-hide w-full justify-start">
+              <TabsTrigger value="documents">Documents</TabsTrigger>
+              <TabsTrigger value="extracted">Extracted Content</TabsTrigger>
+              <TabsTrigger value="wiki" disabled={!request.wikiDraft}>
+                Wiki Draft
+              </TabsTrigger>
+              <TabsTrigger value="backlog" disabled={!request.backlogDraft}>
+                Backlog Draft
+              </TabsTrigger>
+              <TabsTrigger value="compliance" disabled={!request.compliance}>
+                Compliance
+              </TabsTrigger>
+              <TabsTrigger value="review">Review & Approvals</TabsTrigger>
+              <TabsTrigger value="generate">Generate</TabsTrigger>
+            </TabsList>
 
-          <TabsContent value="pipeline">
+            <TabsContent value="documents">
+              <DocumentsView request={request} />
+            </TabsContent>
+            <TabsContent value="extracted">
+              <ExtractedContentView request={request} />
+            </TabsContent>
+            <TabsContent value="wiki">
+              <WikiDraftView request={request} currentUser={currentUser} />
+            </TabsContent>
+            <TabsContent value="backlog">
+              <BacklogDraftView request={request} currentUser={currentUser} />
+            </TabsContent>
+            <TabsContent value="compliance">
+              <ComplianceView request={request} currentUser={currentUser} />
+            </TabsContent>
+            <TabsContent value="review">
+              <ReviewApprovalsView request={request} currentUser={currentUser} />
+            </TabsContent>
+            <TabsContent value="generate">
+              <GenerateView request={request} currentUser={currentUser} />
+            </TabsContent>
+          </Tabs>
+
+          {/* Right: Pipeline panel (always visible) */}
+          <div className="sticky top-4">
             <PipelineView request={request} />
-          </TabsContent>
-          <TabsContent value="documents">
-            <DocumentsView request={request} />
-          </TabsContent>
-          <TabsContent value="extracted">
-            <ExtractedContentView request={request} />
-          </TabsContent>
-          <TabsContent value="wiki">
-            <WikiDraftView request={request} currentUser={currentUser} />
-          </TabsContent>
-          <TabsContent value="backlog">
-            <BacklogDraftView request={request} currentUser={currentUser} />
-          </TabsContent>
-          <TabsContent value="compliance">
-            <ComplianceView request={request} currentUser={currentUser} />
-          </TabsContent>
-          <TabsContent value="review">
-            <ReviewApprovalsView request={request} currentUser={currentUser} />
-          </TabsContent>
-          <TabsContent value="generate">
-            <GenerateView request={request} currentUser={currentUser} />
-          </TabsContent>
-        </Tabs>
+          </div>
+        </div>
       </div>
     </AppLayout>
   );
@@ -184,14 +188,22 @@ function generateMockBacklog() {
             priority: "High" as const, estimate: "4 weeks", labels: ["auth", "core"], acceptanceCriteria: ["Login/logout working", "Role-based access enforced", "Profile CRUD complete"],
             dependencies: [],
             children: [
-              { id: "story-new-1", type: "story" as const, title: "As a user, I can register and create an account", description: "User registration with email verification",
-                priority: "High" as const, estimate: "3d", labels: ["auth"], acceptanceCriteria: ["Registration form validates inputs", "Email verification sent", "Account created on confirmation"], dependencies: [] },
-              { id: "story-new-2", type: "story" as const, title: "As a user, I can login with credentials", description: "Secure login with JWT tokens",
-                priority: "High" as const, estimate: "2d", labels: ["auth"], acceptanceCriteria: ["JWT token issued on login", "Invalid credentials show error", "Session persists across refreshes"], dependencies: ["story-new-1"] },
-              { id: "task-new-1", type: "task" as const, title: "Setup authentication middleware", description: "Configure JWT middleware for API routes",
-                priority: "High" as const, estimate: "1d", labels: ["backend", "auth"], acceptanceCriteria: ["Middleware rejects unauthorized requests"], dependencies: [] },
-              { id: "task-new-2", type: "task" as const, title: "Create user profile UI components", description: "Build profile view and edit components",
-                priority: "Medium" as const, estimate: "2d", labels: ["frontend"], acceptanceCriteria: ["Profile displays user info", "Edit form saves changes"], dependencies: [] },
+              {
+                id: "story-new-1", type: "story" as const, title: "As a user, I can register and create an account", description: "User registration with email verification",
+                priority: "High" as const, estimate: "3d", labels: ["auth"], acceptanceCriteria: ["Registration form validates inputs", "Email verification sent", "Account created on confirmation"], dependencies: []
+              },
+              {
+                id: "story-new-2", type: "story" as const, title: "As a user, I can login with credentials", description: "Secure login with JWT tokens",
+                priority: "High" as const, estimate: "2d", labels: ["auth"], acceptanceCriteria: ["JWT token issued on login", "Invalid credentials show error", "Session persists across refreshes"], dependencies: ["story-new-1"]
+              },
+              {
+                id: "task-new-1", type: "task" as const, title: "Setup authentication middleware", description: "Configure JWT middleware for API routes",
+                priority: "High" as const, estimate: "1d", labels: ["backend", "auth"], acceptanceCriteria: ["Middleware rejects unauthorized requests"], dependencies: []
+              },
+              {
+                id: "task-new-2", type: "task" as const, title: "Create user profile UI components", description: "Build profile view and edit components",
+                priority: "Medium" as const, estimate: "2d", labels: ["frontend"], acceptanceCriteria: ["Profile displays user info", "Edit form saves changes"], dependencies: []
+              },
             ],
           },
           {
@@ -199,12 +211,18 @@ function generateMockBacklog() {
             priority: "Critical" as const, estimate: "5 weeks", labels: ["pipeline", "core"], acceptanceCriteria: ["Data ingested from all sources", "Validation catches 99% of errors", "Transformation runs under 5 minutes"],
             dependencies: ["feat-new-1"],
             children: [
-              { id: "story-new-3", type: "story" as const, title: "As an operator, I can upload data files for processing", description: "File upload with format validation",
-                priority: "Critical" as const, estimate: "3d", labels: ["upload", "pipeline"], acceptanceCriteria: ["Supports CSV, JSON, XML formats", "File size limit enforced", "Upload progress shown"], dependencies: [] },
-              { id: "story-new-4", type: "story" as const, title: "System automatically validates uploaded data", description: "Automated validation rules engine",
-                priority: "High" as const, estimate: "5d", labels: ["validation", "pipeline"], acceptanceCriteria: ["Schema validation passes", "Business rules checked", "Validation report generated"], dependencies: ["story-new-3"] },
-              { id: "task-new-3", type: "task" as const, title: "Implement data transformation engine", description: "Build ETL pipeline for data normalization",
-                priority: "High" as const, estimate: "5d", labels: ["backend", "etl"], acceptanceCriteria: ["Transforms complete within SLA", "Error handling for malformed data"], dependencies: [] },
+              {
+                id: "story-new-3", type: "story" as const, title: "As an operator, I can upload data files for processing", description: "File upload with format validation",
+                priority: "Critical" as const, estimate: "3d", labels: ["upload", "pipeline"], acceptanceCriteria: ["Supports CSV, JSON, XML formats", "File size limit enforced", "Upload progress shown"], dependencies: []
+              },
+              {
+                id: "story-new-4", type: "story" as const, title: "System automatically validates uploaded data", description: "Automated validation rules engine",
+                priority: "High" as const, estimate: "5d", labels: ["validation", "pipeline"], acceptanceCriteria: ["Schema validation passes", "Business rules checked", "Validation report generated"], dependencies: ["story-new-3"]
+              },
+              {
+                id: "task-new-3", type: "task" as const, title: "Implement data transformation engine", description: "Build ETL pipeline for data normalization",
+                priority: "High" as const, estimate: "5d", labels: ["backend", "etl"], acceptanceCriteria: ["Transforms complete within SLA", "Error handling for malformed data"], dependencies: []
+              },
             ],
           },
           {
@@ -212,12 +230,18 @@ function generateMockBacklog() {
             priority: "High" as const, estimate: "4 weeks", labels: ["reporting", "dashboard"], acceptanceCriteria: ["Dashboard loads under 2 seconds", "Widgets are configurable", "Export to PDF/Excel supported"],
             dependencies: ["feat-new-2"],
             children: [
-              { id: "story-new-5", type: "story" as const, title: "As a manager, I can view real-time KPI dashboard", description: "Dashboard with live metrics and charts",
-                priority: "High" as const, estimate: "4d", labels: ["dashboard"], acceptanceCriteria: ["KPIs update in real-time", "Charts are interactive"], dependencies: [] },
-              { id: "task-new-4", type: "task" as const, title: "Create chart components library", description: "Reusable chart components using charting library",
-                priority: "Medium" as const, estimate: "3d", labels: ["frontend", "charts"], acceptanceCriteria: ["Line, bar, pie charts available"], dependencies: [] },
-              { id: "task-new-5", type: "task" as const, title: "Implement report export service", description: "PDF and Excel export for dashboard data",
-                priority: "Medium" as const, estimate: "2d", labels: ["backend", "export"], acceptanceCriteria: ["PDF export renders correctly", "Excel contains all data"], dependencies: [] },
+              {
+                id: "story-new-5", type: "story" as const, title: "As a manager, I can view real-time KPI dashboard", description: "Dashboard with live metrics and charts",
+                priority: "High" as const, estimate: "4d", labels: ["dashboard"], acceptanceCriteria: ["KPIs update in real-time", "Charts are interactive"], dependencies: []
+              },
+              {
+                id: "task-new-4", type: "task" as const, title: "Create chart components library", description: "Reusable chart components using charting library",
+                priority: "Medium" as const, estimate: "3d", labels: ["frontend", "charts"], acceptanceCriteria: ["Line, bar, pie charts available"], dependencies: []
+              },
+              {
+                id: "task-new-5", type: "task" as const, title: "Implement report export service", description: "PDF and Excel export for dashboard data",
+                priority: "Medium" as const, estimate: "2d", labels: ["backend", "export"], acceptanceCriteria: ["PDF export renders correctly", "Excel contains all data"], dependencies: []
+              },
             ],
           },
         ],

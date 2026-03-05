@@ -25,12 +25,19 @@ export type Category = "Internal" | "Client";
 
 export type PipelineStepStatus = "queued" | "running" | "success" | "fail";
 
+export type UserStatus = "active" | "inactive" | "invited";
+
 export interface User {
   id: string;
   name: string;
   email: string;
   role: UserRole;
   avatar?: string;
+  status: UserStatus;
+  department: string;
+  lastLogin: string | null;
+  createdAt: string;
+  invitedBy?: string;
 }
 
 export interface ProjectDocument {

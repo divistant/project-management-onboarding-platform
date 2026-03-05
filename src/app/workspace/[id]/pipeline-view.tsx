@@ -69,7 +69,7 @@ export function PipelineView({ request }: { request: OnboardingRequest }) {
     <Card>
       <CardHeader>
         <div className="flex items-center justify-between">
-          <CardTitle className="text-base">Processing Pipeline</CardTitle>
+          <CardTitle className="text-sm">Processing Pipeline</CardTitle>
           <Button
             variant="outline"
             size="sm"
@@ -78,11 +78,11 @@ export function PipelineView({ request }: { request: OnboardingRequest }) {
           >
             {allDone ? (
               <>
-                <RefreshCw className="mr-1 h-4 w-4" /> Re-run Pipeline
+                <RefreshCw className="mr-1 h-3.5 w-3.5" /> Re-run
               </>
             ) : (
               <>
-                <RefreshCw className={`mr-1 h-4 w-4 ${isProcessing ? "animate-spin" : ""}`} /> Refresh
+                <RefreshCw className={`mr-1 h-3.5 w-3.5 ${isProcessing ? "animate-spin" : ""}`} /> Refresh
               </>
             )}
           </Button>
@@ -149,15 +149,14 @@ export function PipelineView({ request }: { request: OnboardingRequest }) {
                               return (
                                 <div
                                   key={i}
-                                  className={`py-0.5 ${
-                                    isError
+                                  className={`py-0.5 ${isError
                                       ? "text-red-400"
                                       : isWarn
                                         ? "text-amber-400"
                                         : isSuccess
                                           ? "text-green-400"
                                           : "text-zinc-400"
-                                  }`}
+                                    }`}
                                 >
                                   <span className="select-none text-zinc-600 mr-3">{String(i + 1).padStart(3, " ")}</span>
                                   {log}
@@ -175,6 +174,6 @@ export function PipelineView({ request }: { request: OnboardingRequest }) {
           })}
         </div>
       </CardContent>
-    </Card>
+    </Card >
   );
 }

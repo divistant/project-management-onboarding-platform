@@ -8,7 +8,7 @@ interface AuthState {
 }
 
 export const useAuthStore = create<AuthState>((set) => ({
-  currentUser: USERS[0],
+  currentUser: USERS.find((u) => u.role === "admin") || USERS[0],
   switchRole: (role) => {
     const user = USERS.find((u) => u.role === role);
     if (user) set({ currentUser: user });

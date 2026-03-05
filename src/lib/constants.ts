@@ -1,4 +1,5 @@
 import type { UserRole, OnboardingStatus } from "@/types/onboarding";
+import type { TranslationKey } from "@/lib/i18n/translations/en";
 
 export const ROLE_LABELS: Record<UserRole, string> = {
   pm: "Project Manager",
@@ -20,10 +21,78 @@ export const STATUS_CONFIG: Record<
   FAILED: { label: "Failed", variant: "destructive" },
 };
 
-export const NAV_ITEMS = [
-  { label: "Dashboard", href: "/dashboard", icon: "LayoutDashboard", roles: ["pm", "compliance", "tech_lead", "admin"] as UserRole[] },
-  { label: "Onboarding Requests", href: "/onboarding", icon: "ClipboardList", roles: ["pm", "compliance", "tech_lead", "admin"] as UserRole[] },
-  { label: "Templates & Standards", href: "/admin/templates", icon: "FileText", roles: ["admin"] as UserRole[] },
-  { label: "Integrations", href: "/admin/integrations", icon: "Plug", roles: ["admin"] as UserRole[] },
-  { label: "Audit Log", href: "/audit", icon: "ScrollText", roles: ["pm", "compliance", "tech_lead", "admin"] as UserRole[] },
+const ALL_ROLES: UserRole[] = ["pm", "compliance", "tech_lead", "admin"];
+
+export interface NavItem {
+  label: string;
+  labelKey: TranslationKey;
+  href: string;
+  icon: string;
+  roles: UserRole[];
+}
+
+export interface NavGroup {
+  label: string;
+  labelKey: TranslationKey;
+  items: NavItem[];
+}
+
+export const NAV_GROUPS: NavGroup[] = [
+  {
+    label: "WORKSPACE",
+    labelKey: "nav_group_workspace",
+    items: [
+      {
+        label: "Dashboard",
+        labelKey: "nav_dashboard",
+        href: "/dashboard",
+        icon: "LayoutDashboard",
+        roles: ALL_ROLES,
+      },
+      {
+        label: "Onboarding Project",
+        labelKey: "nav_onboarding",
+        href: "/onboarding",
+        icon: "FolderKanban",
+        roles: ALL_ROLES,
+      },
+      {
+        label: "Template & Standard",
+        labelKey: "nav_templates",
+        href: "/admin/templates",
+        icon: "BookOpen",
+        roles: ALL_ROLES,
+      },
+    ],
+  },
+  {
+    label: "ADMIN",
+    labelKey: "nav_group_admin",
+    items: [
+      {
+        label: "Settings",
+        labelKey: "nav_settings",
+        href: "/admin/settings",
+        icon: "Settings",
+        roles: ["admin"],
+      },
+      {
+        label: "User",
+        labelKey: "nav_users",
+        href: "/admin/users",
+        icon: "Users",
+        roles: ["admin"],
+      },
+      {
+        label: "Audit Log",
+        labelKey: "nav_audit",
+        href: "/audit",
+        icon: "ScrollText",
+        roles: ALL_ROLES,
+      },
+    ],
+  },
 ];
+
+// Legacy flat list kept for any existing consumers
+export const NAV_ITEMS = NAV_GROUPS.flatMap((g) => g.items);
