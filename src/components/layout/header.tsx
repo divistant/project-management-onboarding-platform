@@ -22,6 +22,7 @@ import { useThemeStore, type Theme } from "@/stores/theme-store";
 import { useI18nStore, type Locale } from "@/lib/i18n";
 import { useT } from "@/lib/i18n/use-translation";
 import { CommandPalette } from "./command-palette";
+import { NotificationCenter } from "./notification-center";
 
 const ROLES: UserRole[] = ["pm", "compliance", "tech_lead", "admin"];
 
@@ -112,6 +113,9 @@ export function Header() {
       <div className="flex items-center gap-2">
         {/* Command Palette Search */}
         <CommandPalette />
+
+        {/* Notifications */}
+        <NotificationCenter />
 
         {/* Language Switcher */}
         <DropdownMenu>
